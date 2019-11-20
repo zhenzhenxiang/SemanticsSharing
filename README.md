@@ -16,16 +16,20 @@ This repository is the offical release for the paper <a href="https://arxiv.org/
 
 With the provided pre-trained models, please follow the usages below to perform the testing:
 
-1. Baseline
-   
-2. Ours
+- Baseline
+  
+  Run the testing script:
+
+- Ours
+  
+  Run the testing script:
 
 ## Training
 
 ### Pre-training
 
-1. For the pre-training of semantic segmentation, please refer to semantic_segmentation/README.md.
-2. For the pre-training of optical flow, please refer to optical_flow/README.md.
+1. For the pre-training of semantic segmentation, please refer to [semantic_segmentation/README.md](semantic_segmentation/README.md).
+2. For the pre-training of optical flow, please refer to [optical_flow/README.md](optical_flow/README.md).
 3. For the pre-training of feature fusion module ...
 
 ### Training the whole network
@@ -33,7 +37,7 @@ With the provided pre-trained models, please follow the usages below to perform 
 1. Prepare the datasets ...
 2. Run the training script ...
 
-# License and Citation 
+## License and Citation 
 All code and other materials (including but not limited to the paper, figures, and tables) are provided for research purposes only and without any warranty. Any commercial use requires our consent. When using any parts of the code package or the paper (<i>Boosting Driving Scene Parsing with Shared Semantics</i>) in your work, please cite the following paper:
 
 <pre><code>@misc{xiang2019boosting,
@@ -63,7 +67,7 @@ All code and other materials (including but not limited to the paper, figures, a
     year = {2018}
     }</code></pre>
 
-# Acknowledgments
+## Acknowledgments
 - [Tramac/Lightweight-Segmentation](https://github.com/Tramac/Lightweight-Segmentation): MobileNetV3 for semantic segmentation.
 - [RanhaoKang/PWC-Net_pytorch](https://github.com/RanhaoKang/PWC-Net_pytorch): optical flow estimation.
 - [ClementPinard/Pytorch-Correlation-extension](https://github.com/ClementPinard/Pytorch-Correlation-extension): PyTorch implementation of Corrleation Module.
