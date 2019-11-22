@@ -6,7 +6,7 @@ This repository is the offical release for the paper <a href="https://arxiv.org/
 ![](resource/network.png)
 
 ## Requirements
-- Python 3.6
+- Python 3.7
 - PyTorch 1.2
 - spatial-correlation-sampler
 - kornia
