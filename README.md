@@ -8,7 +8,6 @@ This repository is the offical release for the paper <a href="https://arxiv.org/
 ## Requirements
 - Python 3.6
 - PyTorch 1.2
-- Tensorflow
 - spatial-correlation-sampler
 - kornia
 
@@ -16,20 +15,22 @@ This repository is the offical release for the paper <a href="https://arxiv.org/
 
 With the provided pre-trained models, please follow the usages below to perform the testing:
 
-- Baseline
+<!-- - Baseline
   
-  Run the testing script:
+  Run the testing script: -->
 
 - Ours
   
   Run the testing script:
+  <pre><code>python3 test.py
+  </code></pre>
 
 ## Training
 
 ### Pre-training
 
-1. For the pre-training of semantic segmentation, please refer to [semantic_segmentation/README.md](semantic_segmentation/README.md).
-2. For the pre-training of optical flow, please refer to [optical_flow/README.md](optical_flow/README.md).
+1. For the pre-training of semantic segmentation, please refer to [pre_train/semantic_segmentation/README.md](pre_train/semantic_segmentation/README.md).
+2. For the pre-training of optical flow, please refer to [pre_train/optical_flow/README.md](pre_train/optical_flow/README.md).
 3. For the pre-training of feature fusion module ...
 
 ### Training the whole network

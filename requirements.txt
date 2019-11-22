@@ -1,0 +1,4 @@
+imageio
+spatial-correlation-sampler==0.1.0
+kornia
+tensorboardX
