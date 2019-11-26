@@ -1,6 +1,6 @@
 # Semantics Sharing
 
-This repository is the offical release for the paper <a href="https://arxiv.org/pdf/1909.07038.pdf"><strong>Boosting Real-Time Driving Scene Parsing with Shared Semantics</strong></a>.
+This repository is the offical release for the paper <a href="https://arxiv.org/pdf/1909.07038.pdf"><strong>Boosting Real-Time Driving Scene Parsing with Shared Semantics</strong></a>. The video introducing the paper is available <a href="https://youtu.be/Od1WVaqqt1o">here</a>.
 
 ## Network Architecture
 ![](resource/network.png)
