@@ -4,8 +4,12 @@ This repository is the offical release for the paper <a href="https://arxiv.org/
 
 In this paper, we proposed a deep neural network for real-time scene parsing which leverages shared semantics between cameras with different perspectives and overlapped views. Compared with traditional approaches, our method mainly boosts the scene parsing task for multi-camera systems in the following two aspects: 1) reduce the computation load for cameras with narrower field of views (FoVs), and 2) improve the scene parsing quality for cameras with broader FoVs.
 
+<p align="center">
+<img src="resource/motivation.jpg" width="600">
+</p>
+
 ## Network Architecture
-![](resource/network.png)
+![](resource/network.jpg)
 
 ## Requirements
 - Python 3.6
@@ -26,6 +30,10 @@ With the provided pre-trained models, please follow the usages below to perform 
   Run the testing script:
   <pre><code>python3 test.py
   </code></pre>
+
+- Comparisons
+
+![](resource/results.jpg)
 
 <!-- ## Training
 
