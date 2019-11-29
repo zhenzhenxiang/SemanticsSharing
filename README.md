@@ -2,6 +2,8 @@
 
 This repository is the offical release for the paper <a href="https://arxiv.org/pdf/1909.07038.pdf"><strong>Boosting Real-Time Driving Scene Parsing with Shared Semantics</strong></a>. The video introducing the paper is available <a href="https://youtu.be/Od1WVaqqt1o">here</a>.
 
+In this paper, we proposed a deep neural network for real-time scene parsing which leverages shared semantics between cameras with different perspectives and overlapped views. Compared with traditional approaches, our method mainly boosts the scene parsing task for multi-camera systems in the following two aspects: 1) reduce the computation load for cameras with narrower field of views (FoVs), and 2) improve the scene parsing quality for cameras with broader FoVs.
+
 ## Network Architecture
 ![](resource/network.png)
 
