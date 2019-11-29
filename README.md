@@ -25,7 +25,7 @@ With the provided pre-trained models, please follow the usages below to perform 
   <pre><code>python3 test.py
   </code></pre>
 
-## Training
+<!-- ## Training
 
 ### Pre-training
 
@@ -36,7 +36,7 @@ With the provided pre-trained models, please follow the usages below to perform 
 ### Training the whole network
 
 1. Prepare the datasets ...
-2. Run the training script ...
+2. Run the training script ...-->
 
 ## License and Citation 
 All code and other materials (including but not limited to the paper, figures, and tables) are provided for research purposes only and without any warranty. Any commercial use requires our consent. When using any parts of the code package or the paper (<i>Boosting Driving Scene Parsing with Shared Semantics</i>) in your work, please cite the following paper:
