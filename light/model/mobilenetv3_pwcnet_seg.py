@@ -42,8 +42,8 @@ class MobileNetV3Seg(BaseModel):
         F_60_16 = self.head(c4_60)
 
         # output
-        seg_result_60 = F.interpolate(F_120_16, img_size, mode='bilinear', align_corners=True)
-        seg_result_120 = F.interpolate(F_60_16, img_size, mode='bilinear', align_corners=True)
+        seg_result_60 = F.interpolate(F_60_16, img_size, mode='bilinear', align_corners=True)
+        seg_result_120 = F.interpolate(F_120_16, img_size, mode='bilinear', align_corners=True)
 
         outputs = list()
         outputs.append([seg_result_120, seg_result_60])
