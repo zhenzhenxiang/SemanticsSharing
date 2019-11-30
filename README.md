@@ -82,6 +82,7 @@ All code and other materials (including but not limited to the paper, figures, a
 - [Tramac/Lightweight-Segmentation](https://github.com/Tramac/Lightweight-Segmentation): MobileNetV3 for semantic segmentation.
 - [RanhaoKang/PWC-Net_pytorch](https://github.com/RanhaoKang/PWC-Net_pytorch): optical flow estimation.
 - [ClementPinard/Pytorch-Correlation-extension](https://github.com/ClementPinard/Pytorch-Correlation-extension): PyTorch implementation of Corrleation Module.
+- [nianticlabs/monodepth2](https://github.com/nianticlabs/monodepth2): unsupervised losses.
 - [kornia/kornia](https://github.com/kornia/kornia): PyTorch implementation of homography warping.
 
 ## Contact
