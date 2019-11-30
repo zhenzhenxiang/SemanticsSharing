@@ -118,7 +118,7 @@ def save_pred(image, target, image_name, outputs, args):
 
     mask_120 = get_color_pallete(predict_120, 'yuanqu')
     mask_120 = np.asarray(mask_120.convert('RGB'))
-    imageio.imwrite(os.path.join(args.outdir, str(image_name[0])[2:-2] + args.model_mode + '.png'), mask_120)
+    imageio.imwrite(os.path.join(args.outdir, str(image_name[0])[2:-2] + '_' + args.model_mode + '.png'), mask_120)
     ##################################### 60 #############################
     pred_60 = torch.argmax(outputs[0][1], 1)
     pred_60 = pred_60.cpu().data.numpy()
@@ -126,7 +126,7 @@ def save_pred(image, target, image_name, outputs, args):
 
     mask_60 = get_color_pallete(predict_60, 'yuanqu')
     mask_60 = np.asarray(mask_60.convert('RGB'))
-    imageio.imwrite(os.path.join(args.outdir, str(image_name[1])[2:-2] + args.model_mode + '.png'), mask_60)
+    imageio.imwrite(os.path.join(args.outdir, str(image_name[1])[2:-2] + '_' + args.model_mode + '.png'), mask_60)
 
 
 if __name__ == '__main__':
