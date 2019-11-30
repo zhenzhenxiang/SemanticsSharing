@@ -13,7 +13,6 @@ from spatial_correlation_sampler import SpatialCorrelationSampler
 from light.map.pwcnet_args import pwcnet_args
 from light.map.pwcnet_flow_utils import vis_flow, save_flow
 from light.map.pwcnet_modules import (WarpingLayer, FeaturePyramidExtractor, FeaturePyramidExtractorDW, CostVolumeLayer, OpticalFlowEstimator, OpticalFlowEstimatorDW, ContextNetwork, get_grid)
-
 # from correlation_package.modules.correlation import Correlation
 
 

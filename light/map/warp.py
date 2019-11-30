@@ -7,27 +7,27 @@ import torch.nn.functional as F
 import torch.optim as optim
 import kornia as dgm    
 import math
-    
+
 class warp_kornia(nn.Module):
     """
     :param img_src: NCHW  tensor(cv2.imread)   255
     :return: NCHW  tensor  normal
     """
     def __init__(self):
-        super(warp_kornia, self).__init__()  
-             
-                
-    def forward(self, img_src, direc, scale):             
+        super(warp_kornia, self).__init__()
+
+
+    def forward(self, img_src, direc, scale):
         height, width = img_src.shape[-2:]
-        
+
         self.warper = dgm.HomographyWarper(height, width)
-        self.MyHomography = Homography(direc, height, width, N=img_src.shape[0], scale=scale)  
-        
-        img_src_tensor = img_src / 255.        
-        
-        warped_img_tensor = 255. * self.warper(img_src_tensor, self.MyHomography())        
+        self.MyHomography = Homography(direc, height, width, N=img_src.shape[0], scale=scale)
+
+        img_src_tensor = img_src / 255.
+
+        warped_img_tensor = 255. * self.warper(img_src_tensor, self.MyHomography())
         return warped_img_tensor
-    
+
     
 class Homography(nn.Module):
     def __init__(self, direc, height, width, N, scale):
