@@ -12,16 +12,7 @@ __all__ = ['yuanquSegmentation']
 
 class yuanquSegmentation(data.Dataset):
     """Cityscapes Semantic Segmentation Dataset.
-    Parameters
-    ----------
-    root : string
-        Path to Cityscapes folder. Default is './datasets/citys'
-    split: string
-        'train', 'val' or 'test'
-    transform : callable, optional
-        A function that transforms the image
-    Examples
-    --------
+
     >>> from torchvision import transforms
     >>> import torch.utils.data as data
     >>> # Transforms for Normalization
@@ -36,13 +27,16 @@ class yuanquSegmentation(data.Dataset):
     >>>     trainset, 4, shuffle=True,
     >>>     num_workers=4)
     """
-    BASE_DIR = 'cityscapes'
-    NUM_CLASS = 6
+    # BASE_DIR = 'cityscapes'
+    # NUM_CLASS = 6
 
     def __init__(self, args, root='/workspace/ShareData/Data/yuanqu/video/all/image/', split='train', mode=None, transform=None, base_size=520, crop_size=480, data_angle=120, re_size=(1920,1216), **kwargs):
         super(yuanquSegmentation, self).__init__()
         #self.num_class = NUM_CLASS
-        self.root = args.test_path#args.dataset_path + args.train_file + '/'
+        self.args = args
+        self.root = args.test_path
+        if split != 'test':
+            self.root = args.dataset_path + args.train_file + '/'
         self.split = split
         self.mode = mode if mode is not None else split
         self.transform = transform
@@ -50,8 +44,7 @@ class yuanquSegmentation(data.Dataset):
         self.crop_size = crop_size
         self.re_size = re_size
         self.data_angle = data_angle
-        
-        #self.images_paths, self.mask_paths = _get_city_pairs(self.root, self.split, self.data_angle)
+
         self.images_paths, self.mask_paths = _get_city_pairs(folder=self.root,split=split,args=args)
         if split != 'test':
             assert (len(self.images_paths) == len(self.mask_paths))
@@ -60,33 +53,9 @@ class yuanquSegmentation(data.Dataset):
                     raise RuntimeError("Found 0 images in subfolders of: " + self.root + "\n")
                 elif self.split == 'val':
                     raise RuntimeError("Found 0 images in subfolders of: " + args.val_file + "\n")
-       
-        '''
-        self.valid_classes = [7, 8, 11, 12, 13, 17, 19, 20, 21, 22,
-                              23, 24, 25, 26, 27, 28, 31, 32, 33]
-        self._key = np.array([-1, -1, -1, -1, -1, -1,
-                              -1, -1, 0, 1, -1, -1,
-                              2, 3, 4, -1, -1, -1,
-                              5, -1, 6, 7, 8, 9,
-                              10, 11, 12, 13, 14, 15,
-                              -1, -1, 16, 17, 18])
-        '''
-        self.valid_classes = [1,2,3,4,5,6]
-        self._key = np.array([-1,0,1,2,3,4,5])
-        
-        self._mapping = np.array(range(-1, len(self._key) - 1)).astype('int32')
+
 
     def _class_to_index(self, mask):
-        #mask_new = mask - np.ones(shape=mask.shape,dtype=np.int)
-        '''
-        values = np.unique(mask)
-        for value in values:
-            assert (value in self._mapping)
-        a =  mask.ravel()
-        index = np.digitize(a, self._mapping, right=True)
-        
-        return self._key[index].reshape(mask.shape)
-        '''
         return mask
     def __getitem__(self, index):
         if self.mode == 'test':
@@ -104,49 +73,33 @@ class yuanquSegmentation(data.Dataset):
             return [img, img_60], [], [self.images_paths[index].split('/')[-1][:-4],  imgpath60.split('/')[-1][:-4]]
 
         img = Image.open(self.images_paths[index]).convert('RGB')
-        mask = Image.open(self.mask_paths[index]).convert('L')  
-        
-        #imgpath60 = self.images_paths[index].replace('/120/', '/60/').replace('fov120', 'fov60')
-        #maskpath60 = self.images_paths[index].replace('/120/', '/60/').replace('fov120', 'fov60')
+        mask = Image.open(self.mask_paths[index]).convert('L')
         
         imgpath60 = self.images_paths[index].replace('fov120', 'fov60')
         maskpath60 = self.mask_paths[index].replace('fov120', 'fov60')
         img_60 = Image.open(imgpath60).convert('RGB')
-        mask_60 = Image.open(maskpath60).convert('L')  
-        
-
-        
-        
+        mask_60 = Image.open(maskpath60).convert('L')
         
         # synchrosized transform
         if self.mode == 'train':
-            '''
-            w, h = img.size
-            x1 = random.randint(0, w - self.crop_size)
-            y1 = random.randint(0, h - self.crop_size)
-            img = img.crop((x1, y1, x1 + self.crop_size, y1 + self.crop_size))
-            mask = mask.crop((x1, y1, x1 + self.crop_size, y1 + self.crop_size))
-            img, mask = self._img_transform(img), self._mask_transform(mask)
-            '''
             img, mask = self._sync_transform(img, mask)
             img_60, mask_60 = self._sync_transform(img_60, mask_60)
-        elif self.mode == 'train_all' or self.mode == 'val_all':
+            img, mask = self._img_transform(img), self._mask_transform(mask)
+            img_60, mask_60 = self._img_transform(img_60), self._mask_transform(mask_60)
+        elif self.mode == 'val':
+            img, mask = self._val_sync_transform(img, mask)
+            img_60, mask_60 = self._val_sync_transform(img_60, mask_60)
+            img, mask = self._img_transform(img), self._mask_transform(mask)
+            img_60, mask_60 = self._img_transform(img_60), self._mask_transform(mask_60)
+        elif self.mode == 'train_onlyrs' or self.mode == 'val_onlyrs':
             img = img.resize(self.re_size, Image.BILINEAR)
             mask = mask.resize(self.re_size, Image.NEAREST)
             img_60 = img_60.resize(self.re_size, Image.BILINEAR)
             mask_60 = mask_60.resize(self.re_size, Image.NEAREST)
             img, mask = self._img_transform(img), self._mask_transform(mask)
             img_60, mask_60 = self._img_transform(img_60), self._mask_transform(mask_60)
-        elif self.mode == 'val':
-            
-            #img, mask = self._img_transform(img), self._mask_transform(mask)
-            img, mask = self._val_sync_transform(img, mask)
-            img_60, mask_60 = self._val_sync_transform(img_60, mask_60)
-            
         else:
             assert self.mode == 'testval' 
-            #img = img.resize((w,int(604)), Image.BILINEAR)
-           
             img, mask = self._img_transform(img), self._mask_transform(mask)
             img_60, mask_60 = self._img_transform(img_60), self._mask_transform(mask_60)
         # general resize, normalize and toTensor
@@ -228,7 +181,7 @@ class yuanquSegmentation(data.Dataset):
     @property
     def num_class(self):
         """Number of categories."""
-        return self.NUM_CLASS
+        return not self.args.nclass
 
     
     @property
@@ -299,8 +252,6 @@ def _get_city_pairs(folder, args, split='train',data_angle=60):
         return img_paths, []
 
     if split in ('train', 'val'):
-        #img_folder = os.path.join(folder, 'leftImg8bit/' + split + '/' + str(data_angle) + '/120')
-        #mask_folder = os.path.join(folder, 'gtFine/' + split + '/' + str(data_angle) + '/120')
         img_folder = os.path.join(folder)
         mask_folder = os.path.join(folder)
         if split == 'val':            
@@ -321,17 +272,7 @@ def _get_city_pairs(folder, args, split='train',data_angle=60):
     else:
         assert split == 'trainval'
         print('trainval set')
-        train_img_folder = os.path.join(folder, 'leftImg8bit/train/120')
-        train_mask_folder = os.path.join(folder, 'gtFine/train/120')
-        val_img_folder120 = os.path.join(folder, 'leftImg8bit/val/120_7')
-        val_mask_folder120 = os.path.join(folder, 'gtFine/val/120_7')
-        #val_img_folder60 = os.path.join(folder, 'leftImg8bit/val/60')
-        #val_mask_folder60 = os.path.join(folder, 'gtFine/val/60')
-        train_img_paths, train_mask_paths = get_path_pairs(train_img_folder, train_mask_folder)
-        val_img_paths120, val_mask_paths120 = get_path_pairs(val_img_folder120, val_mask_folder120)
-        #val_img_paths60, val_mask_paths60 = get_path_pairs(val_img_folder60, val_mask_folder60)
-        img_paths = train_img_paths + val_img_paths120 #+ val_img_paths60 
-        mask_paths = train_mask_paths + val_mask_paths120 #+ val_mask_paths60
+
     
     return img_paths, mask_paths
 
