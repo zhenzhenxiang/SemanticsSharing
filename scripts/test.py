@@ -44,12 +44,11 @@ def parse_args():
     parser.add_argument('--local_rank', type=int, default=0)
 
     # path
-    parser.add_argument('--model-mode', type=str, default='mobilenetv3', help='model name (default: mobilenetv3)')
-    # choose from ['mobilenetv3', 'mobilenetv3_loosely', 'mobilenetv3_tightly']
+    parser.add_argument('--model-mode', type=str, default='mobilenetv3',
+                        choices=['mobilenetv3', 'mobilenetv3_loosely', 'mobilenetv3_tightly'],
+                        help='model name (default: mobilenetv3)')
     parser.add_argument('--resume', type=str, default='./checkpoint/mobilenetv3_large_yuanqu.pth',
                         help='put the path to resuming file if needed')
-    # './checkpoint/mobilenetv3_large_pwcnet_yuanqu_loosely2.pth'
-    # './checkpoint/mobilenetv3_large_pwcnet_yuanqu_tightly.pth'
     parser.add_argument('--test-path', default='../data/test_picture/',
                         help='pictures for testing')
     parser.add_argument('--out-path', default='../data/results/',

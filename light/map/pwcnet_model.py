@@ -27,11 +27,7 @@ class Net(nn.Module):
         self.feature_pyramid_extractor = FeaturePyramidExtractor(args).to(args.device)
         
         self.warping_layer = WarpingLayer(args)
-        if args.corr == 'CostVolumeLayer':
-            self.corr = CostVolumeLayer(args)
-        else:
-            # self.corr = Correlation(pad_size = args.search_range, kernel_size = 1, max_displacement = args.search_range, stride1 = 1, stride2 = 1, corr_multiply = 1).to(args.device)
-            self.corr = SpatialCorrelationSampler(kernel_size=1, patch_size=(args.search_range*2)+1, stride=1).to(args.device)
+        self.corr = SpatialCorrelationSampler(kernel_size=1, patch_size=(args.search_range*2)+1, stride=1).to(args.device)
         self.flow_estimators = []
         for l, ch in enumerate(args.lv_chs[::-1]):
             
