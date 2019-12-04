@@ -1,17 +1,12 @@
 import torch
-from time import time
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.autograd import Variable
 import math
-from time import time
 import os
 import imageio
 import numpy as np
 from light.map.pwcnet_modules import (WarpingLayer, FeaturePyramidExtractor, FeaturePyramidExtractorDW, CostVolumeLayer, OpticalFlowEstimator, OpticalFlowEstimatorDW, ContextNetwork, get_grid)
-
-# from light.map.pwcnet_modules_mobilenetv3 import FeaturePyramidMobileNetV3
-# from pwcnet_modules_mobilenetv3 import FeaturePyramidMobileNetV3
+from light.map.pwcnet_modules_mobilenetv3 import FeaturePyramidMobileNetV3
 from light.map.pwcnet_args_mobilenetv3 import pwcnet_args_mobilenetv3
 from spatial_correlation_sampler import SpatialCorrelationSampler
 

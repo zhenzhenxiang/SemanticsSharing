@@ -34,9 +34,11 @@ class yuanquSegmentation(data.Dataset):
         super(yuanquSegmentation, self).__init__()
         #self.num_class = NUM_CLASS
         self.args = args
-        self.root = args.test_path
+
         if split != 'test':
-            self.root = args.dataset_path + args.train_file + '/'
+            self.root = os.path.join(args.dataset_path, args.train_file) + '/'
+        else:
+            self.root = args.test_path + '/'
         self.split = split
         self.mode = mode if mode is not None else split
         self.transform = transform
@@ -82,13 +84,25 @@ class yuanquSegmentation(data.Dataset):
         
         # synchrosized transform
         if self.mode == 'train':
+            img = img.resize(self.re_size, Image.BILINEAR)
+            mask = mask.resize(self.re_size, Image.NEAREST)
+            img_60 = img_60.resize(self.re_size, Image.BILINEAR)
+            mask_60 = mask_60.resize(self.re_size, Image.NEAREST)
+
             img, mask = self._sync_transform(img, mask)
             img_60, mask_60 = self._sync_transform(img_60, mask_60)
+
             img, mask = self._img_transform(img), self._mask_transform(mask)
             img_60, mask_60 = self._img_transform(img_60), self._mask_transform(mask_60)
         elif self.mode == 'val':
+            img = img.resize(self.re_size, Image.BILINEAR)
+            mask = mask.resize(self.re_size, Image.NEAREST)
+            img_60 = img_60.resize(self.re_size, Image.BILINEAR)
+            mask_60 = mask_60.resize(self.re_size, Image.NEAREST)
+
             img, mask = self._val_sync_transform(img, mask)
             img_60, mask_60 = self._val_sync_transform(img_60, mask_60)
+
             img, mask = self._img_transform(img), self._mask_transform(mask)
             img_60, mask_60 = self._img_transform(img_60), self._mask_transform(mask_60)
         elif self.mode == 'train_onlyrs' or self.mode == 'val_onlyrs':
@@ -96,6 +110,7 @@ class yuanquSegmentation(data.Dataset):
             mask = mask.resize(self.re_size, Image.NEAREST)
             img_60 = img_60.resize(self.re_size, Image.BILINEAR)
             mask_60 = mask_60.resize(self.re_size, Image.NEAREST)
+
             img, mask = self._img_transform(img), self._mask_transform(mask)
             img_60, mask_60 = self._img_transform(img_60), self._mask_transform(mask_60)
         else:
@@ -181,7 +196,7 @@ class yuanquSegmentation(data.Dataset):
     @property
     def num_class(self):
         """Number of categories."""
-        return not self.args.nclass
+        return self.args.nclass
 
     
     @property

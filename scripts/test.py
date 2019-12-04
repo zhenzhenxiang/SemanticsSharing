@@ -25,8 +25,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 def parse_args():
     parser = argparse.ArgumentParser(description='Light Model for Segmentation')
     # model and dataset
-    parser.add_argument('--model', type=str, default='mobilenetv3_large_pwcflow',
-                        help='backbone model name (default: mobilenet)')
+    parser.add_argument('--model', type=str, default='mobilenetv3_large_pwcflow',help='backbone model name (default: mobilenet)')
     parser.add_argument('--dataset', type=str, default='yuanqu', help='dataset name (default: citys)')
     parser.add_argument('--aux', action='store_true', default=False, help='Auxiliary loss')
 
@@ -36,22 +35,25 @@ def parse_args():
     parser.add_argument('--re_size', type=int, default=(1920, 1216), help='resize for L-all net')
     parser.add_argument('--scale', type=int, default=0.4, help='resize for L-all net')
 
-    parser.add_argument('--batch-size', type=int, default=1, metavar='N',
-                        help='input batch size for training (default: 4)')
-
+    parser.add_argument('--batch-size', type=int, default=1, metavar='N', help='input batch size for training (default: 4)')
     parser.add_argument('--workers', '-j', type=int, default=4, metavar='N', help='dataloader threads')
     parser.add_argument('--no-cuda', action='store_true', default=False, help='disables CUDA training')
     parser.add_argument('--local_rank', type=int, default=0)
 
-    # path
-    parser.add_argument('--model-mode', type=str, default='mobilenetv3',
-                        choices=['mobilenetv3', 'mobilenetv3_loosely', 'mobilenetv3_tightly'],
-                        help='model name (default: mobilenetv3)')
-    parser.add_argument('--resume', type=str, default='./checkpoint/mobilenetv3_large_yuanqu.pth',
+    # command line parameter setting
+    parser.add_argument('--model-mode', type=str, default='mobilenetv3_tightly', help='model name (default: mobilenetv3)')
+    # choose from ['mobilenetv3', 'mobilenetv3_loosely', 'mobilenetv3_tightly']
+    parser.add_argument('--resume', type=str, default='./checkpoint/mobilenetv3_large_pwcnet_yuanqu_tightly.pth',
                         help='put the path to resuming file if needed')
-    parser.add_argument('--test-path', default='../data/test_picture/',
+    # './checkpoint/mobilenetv3_large_pwcnet_yuanqu_loosely2.pth'
+    # './checkpoint/mobilenetv3_large_pwcnet_yuanqu_tightly.pth'
+
+
+    #（unique set)
+    # test path
+    parser.add_argument('--test-path', default='../data/image_test',
                         help='pictures for testing')
-    parser.add_argument('--out-path', default='../data/results/',
+    parser.add_argument('--out-path', default='../data/test_results',
                         help='inference result of saving file')
     args = parser.parse_args()
 
@@ -125,20 +127,18 @@ def save_pred(image, target, image_name, outputs, args):
 
     mask_60 = get_color_pallete(predict_60, 'yuanqu')
     mask_60 = np.asarray(mask_60.convert('RGB'))
-    imageio.imwrite(os.path.join(args.outdir, str(image_name[1])[2:-2] + '_' + args.model_mode + '.png'), mask_60)
+    imageio.imwrite(os.path.join(args.outdir, str(image_name[1])[2:-2] + '_' +
+                                 args.model_mode + '.png'), mask_60)
 
 
 if __name__ == '__main__':
     args = parse_args()
     # reference maskrcnn-benchmark
-    num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
-    args.num_gpus = num_gpus
-    args.distributed = num_gpus > 1
+    args.distributed = False
     if not args.no_cuda and torch.cuda.is_available():
         cudnn.benchmark = True
         args.device = "cuda"
     else:
-        args.distributed = False
         args.device = "cpu"
 
     args.model_mode_list = ['mobilenetv3', 'mobilenetv3_loosely', 'mobilenetv3_tightly']
@@ -150,7 +150,7 @@ if __name__ == '__main__':
         raise RuntimeError("Fusion module name is ERROR!! " + "\n")
     if args.model_mode not in args.model_mode_list:
         raise RuntimeError("Model mode name is ERROR!! " + "\n")
-    args.outdir = args.out_path + '{}_{}'.format(args.model, args.dataset)
+    args.outdir = os.path.join(args.out_path,'{}_{}'.format(args.model, args.dataset))
     if not os.path.exists(args.outdir):
         os.makedirs(args.outdir)
     tester = Tester(args)
