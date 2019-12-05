@@ -32,7 +32,7 @@ In this paper, we proposed a deep neural network for real-time scene parsing whi
 Run the train script with different models and fix some corresponding modules:
 ```
 python3 train.py --model-mode [MODEL_NAME] \
-    		     --fixed_mobilenetv3 [True] --fixed_pwcnet [True]  --fixed_FFM120 [False]  --fixed_FFM60 [True]
+    		     --fixed_mobilenetv3 [True] --fixed_pwcnet [True] --fixed_FFM120 [False] --fixed_FFM60 [True]
 ```
 The ``[MODEL_NAME]`` can be chosen from: mobilenetv3, mobilenetv3_loosely, mobilenetv3_tightly. More training details and parameters setting can be found in the paper.
 
