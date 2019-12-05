@@ -20,26 +20,26 @@ In this paper, we proposed a deep neural network for real-time scene parsing whi
 ## Dataset
 - image pairs
 
- The dataset consists of image pairs from the cameras with 60 degree horizontal FoV and 120 degree horizontal FoV. The format of the file names should following the example images in the [data/image_train](data/image_train) folder: **fov60_00001** & **fov120_00001**.
+  The dataset consists of image pairs from the cameras with 60 degree horizontal FoV and 120 degree horizontal FoV. The format of the file names should following the example images in the [data/image_train](data/image_train) folder: **fov60_00001** & **fov120_00001**.
 
- Note that the number of the same frame must be the same. If more images are added, please increase the index number in the file name.
+  Note that the number of the same frame must be the same. If more images are added, please increase the index number in the file name.
 
 - label
 
- The category that is not included in the loss is labeled -1.
+  The category that is not included in the loss is labeled -1.
 
 ## Train
 Run the train script with different models and fix some corresponding modules:
 ```
-    python3 train.py --model-mode [MODEL_NAME] \
-    				 --fixed_mobilenetv3 [True] --fixed_pwcnet [True]  --fixed_FFM120 [False]  --fixed_FFM60 [True]
+python3 train.py --model-mode [MODEL_NAME] \
+    		     --fixed_mobilenetv3 [True] --fixed_pwcnet [True]  --fixed_FFM120 [False]  --fixed_FFM60 [True]
 ```
 The ``[MODEL_NAME]`` can be chosen from: mobilenetv3, mobilenetv3_loosely, mobilenetv3_tightly. More training details and parameters setting can be found in the paper.
 
 ## Evaluate
 Run the eval script with different models and corresponding model path:
 ```
-    python3 train.py --model-mode [MODEL_NAME] --resume [MODEL_PATH] --save-pre-path [SAVING_PATH] --combined [False]
+python3 train.py --model-mode [MODEL_NAME] --resume [MODEL_PATH] --save-pre-path [SAVING_PATH] --combined [False]
 ```
 The ``[SAVING_PATH]``is the path to save the inference results of the validation set. The form of the results is determined by the parameter **--combined**. If it is *True*, the output will consist of four RGB images.
 ## Test
