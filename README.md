@@ -17,31 +17,55 @@ In this paper, we proposed a deep neural network for real-time scene parsing whi
 - spatial-correlation-sampler
 - kornia
 
-## Testing
+## Dataset
+- image pairs
 
-With the provided pre-trained models, please follow the usages below to perform the testing:
+ The dataset consists of image pairs from the cameras with 60 degree horizontal FoV and 120 degree horizontal FoV. The format of the file names should following the example images in the [data/image_train](data/image_train) folder: **fov60_00001** & **fov120_00001**.
+
+ Note that the number of the same frame must be the same. If more images are added, please increase the index number in the file name.
+
+- label
+
+ The category that is not included in the loss is labeled -1.
+
+## Train
+Run the train script with different models and fix some corresponding modules:
+```
+    python3 train.py --model-mode [MODEL_NAME] \
+    				 --fixed_mobilenetv3 [True] --fixed_pwcnet [True]  --fixed_FFM120 [False]  --fixed_FFM60 [True]
+```
+The ``[MODEL_NAME]`` can be chosen from: mobilenetv3, mobilenetv3_loosely, mobilenetv3_tightly. More training details and parameters setting can be found in the paper.
+
+## Evaluate
+Run the eval script with different models and corresponding model path:
+```
+    python3 train.py --model-mode [MODEL_NAME] --resume [MODEL_PATH] --save-pre-path [SAVING_PATH] --combined [False]
+```
+The ``[SAVING_PATH]``is the path to save the inference results of the validation set. The form of the results is determined by the parameter **--combined**. If it is *True*, the output will consist of four RGB images.
+## Test
+
+With the provided trained models, please follow the usages below to perform the testing:
 
 - Prepare image data and model files
-  
-  The example input images are provided in the [data/test_picture](data/test_picture) folder. The format of the file names should following the example images. If more images are added, please increase the index number in the file name.
+
+  The example input images are provided in the [data/image_test](data/image_test) folder.
 
   The trained models can be downloaded from the following links: [[mobilenetv3](https://drive.google.com/file/d/1j2oiqkg9MfzeaGTF_8AO1Trzle4Xpmhm/view?usp=sharing)], [[loosely-coupled](https://drive.google.com/file/d/15hulONRoEEUrMIJ0BCpG6b_VYxA1TRDI/view?usp=sharing)], [[tightly-coupled](https://drive.google.com/file/d/1U28ceVAHXq9p5wZyozZuc5cWIrFj1I4Q/view?usp=sharing)]. The models should be put in the [scripts/checkpoint](scripts/checkpoint) folder for testing.
 
 - Inference
-  
-  Run the testing script with different models and corresponding PyTorch model files:
+
+  Run the test script with different models and corresponding PyTorch model files:
   ```
-  python3 test.py --model-mode [MODEL_NAME] --resume [MODEL_FILE]
+  python3 test.py --model-mode [MODEL_NAME] --resume [MODEL_PATH]
   ```
 
-  The ``[MODEL_NAME]`` can be chosen from: mobilenetv3, mobilenetv3_loosely, mobilenetv3_tightly.
 
 - Comparisons
 
 ![](resource/results.jpg)
 
 
-## License and Citation 
+## License and Citation
 All code and other materials (including but not limited to the paper, figures, and tables) are provided for research purposes only and without any warranty. Any commercial use requires our consent. When using any parts of the code package or the paper (<i>Boosting Real-Time Driving Scene Parsing with Shared Semantics</i>) in your work, please cite the following paper:
 
 ```
@@ -54,7 +78,6 @@ All code and other materials (including but not limited to the paper, figures, a
     primaryClass={cs.CV}
 }
 ```
-
 ## References
 
 - <a href="http://openaccess.thecvf.com/content_ICCV_2019/papers/Howard_Searching_for_MobileNetV3_ICCV_2019_paper.pdf">MobileNetV3</a>:
